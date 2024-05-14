@@ -1,4 +1,4 @@
-package com.xsis.javapos.controllers;
+package com.xsis.javapos.apicontrollers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,12 +9,12 @@ import com.xsis.javapos.models.Salam;
 
 @RestController
 public class SalamController {
-	@GetMapping("/Salam/{nama}")
+	@GetMapping("api//Salam/{nama}")
 	public String Salam(@PathVariable final String nama) {
 		return "Selamat Datang, " + nama + "!";
 	}
 	
-	@GetMapping("/Salam")
+	@GetMapping("api/Salam")
 	public Salam SalamJuga(@RequestParam(value = "nama", defaultValue = "Orang") final String nama) {
 		return new Salam (13 , nama);
 	}
