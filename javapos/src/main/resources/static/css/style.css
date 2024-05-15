@@ -1,0 +1,21 @@
+/* Styles for Footer */
+#footer {
+    padding: 20px 40px; /* Adjust as needed */
+}
+
+.social-links {
+    display: flex;
+    justify-content: space-between;
+    max-width: 120px; /* Adjust as needed */
+    margin-top: 10px; /* Adjust as needed */
+}
+
+.social-link {
+    color: #ffffff; /* Adjust as needed */
+    font-size: 20px; /* Adjust as needed */
+    margin-right: 10px; /* Adjust as needed */
+}
+
+.social-link:hover {
+    color: #cccccc; /* Adjust as needed */
+}
