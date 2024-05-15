@@ -12,11 +12,50 @@
 	</head>
 	<body>
 		<div layout:fragment="content">
-			<h1>Category Index</h1>
+			<div class="h2">Category Index</div>
+
+            <div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-1">ID</th>
+                            <th class="col-3">Name</th>
+                            <th class="col-7">Description</th>
+                            <th class="col-1 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Makanan</td>
+                            <td>Kategori Makanan</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-primary" title="Details">Detail</a>
+                                    <a class="btn btn-warning" title="Edit">Edit</a>
+                                    <a class="btn btn-danger" title="Delete">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Minuman</td>
+                            <td>Kategori Minuman</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-primary" title="Details">Detail</a>
+                                    <a class="btn btn-warning" title="Edit">Edit</a>
+                                    <a class="btn btn-danger" title="Delete">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 		</div>
 		<!-- <div th:replace="~{fragments/layout :: nav}"></div> -->
 		<!-- <footer>
 			&copy; 2024 - Xsis Java POS
-		</footer> -->
+		</footer> -->       
 	</body>
 </html>
