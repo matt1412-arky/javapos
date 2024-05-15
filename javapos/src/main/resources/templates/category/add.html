@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Category</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <form id="formNewCategory" th:action="@{~/category/save}" method="post">
+            <div class="form-group">
+                <label for="categoryId">ID:</label>
+                <input type="text" class="form-control" id="categoryId" name="Id" placeholder="Enter ID">
+            </div>
+            <div class="form-group">
+                <label for="categoryName">Name:</label>
+                <input type="text" class="form-control" id="categoryName" name="Name" placeholder="Enter Name">
+            </div>
+            <div class="form-group">
+                <label for="categoryDescription">Description:</label>
+                <textarea class="form-control" id="categoryDescription" rows="3" name="Description" placeholder="Enter Description"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk mr-2"></i>Save</button>
+        </form>
+    </div>
+</body>
+</html>

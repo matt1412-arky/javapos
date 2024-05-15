@@ -5,14 +5,16 @@
 		<title>
 			Category :: Index
 		</title>
-		<!-- <link rel="stylesheet" href="/css/bootstrap.min.css">
-    	
-		<script src="/js/jquery-3.7.1.min.js"></script>
-    	<script src="/js/bootstrap.min.js"></script> -->
 	</head>
 	<body>
 		<div layout:fragment="content">
 			<div class="h2">Category Index</div>
+
+            <div class="d-flex justify-content-end mb-2">
+                <button class="btn btn-success" title="Add New">
+                    <i class="fas fa-plus"></i> 
+                </button>
+            </div>
 
             <div>
                 <table class="table table-striped">
@@ -25,40 +27,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Makanan</td>
-                            <td>Kategori Makanan</td>
+                        <tr th:each="item:${data}">
+                            <td th:text="${item.Id}"></td>
+                            <td th:text="${item.Name}"></td>
+                            <td th:text="${item.Description}"></td>
                             <td>
                                 <div class="btn-group">
-                                    <a class="btn btn-primary" title="Details">
+                                    <button th:value="${item.Id}" class="btn btn-primary" title="Details" href="/category/1">
                                         <i class="fas fa-info-circle"></i> <!-- Font Awesome icon for Details -->
-                                    </a>
-                                    <a class="btn btn-warning" title="Edit">
+                                    </button>
+                                    <button th:value="${item.Id}" class="btn btn-warning" title="Edit">
                                         <i class="fas fa-edit"></i> <!-- Font Awesome icon for Edit -->
-                                    </a>
-                                    <a class="btn btn-danger" title="Delete">
+                                    </button>
+                                    <button th:value="${item.Id}" class="btn btn-danger" title="Delete">
                                         <i class="fas fa-trash-alt"></i> <!-- Font Awesome icon for Delete -->
-                                    </a>
-                                </div>
-                                
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Minuman</td>
-                            <td>Kategori Minuman</td>
-                            <td>
-                                <div class="btn-group">
-                                    <a class="btn btn-primary" title="Details">
-                                        <i class="fas fa-info-circle"></i> <!-- Font Awesome icon for Details -->
-                                    </a>
-                                    <a class="btn btn-warning" title="Edit">
-                                        <i class="fas fa-edit"></i> <!-- Font Awesome icon for Edit -->
-                                    </a>
-                                    <a class="btn btn-danger" title="Delete">
-                                        <i class="fas fa-trash-alt"></i> <!-- Font Awesome icon for Delete -->
-                                    </a>
+                                    </button>
                                 </div>
                                 
                             </td>
@@ -66,10 +49,20 @@
                     </tbody>
                 </table>
             </div>
-		</div>
-		<!-- <div th:replace="~{fragments/layout :: nav}"></div> -->
-		<!-- <footer>
-			&copy; 2024 - Xsis Java POS
-		</footer> -->       
+		</div>    
 	</body>
 </html>
+
+<script>
+    $(".btn-primary").click(function(e) {
+        $("#modalLgBody").load("category/" + this.value);
+        $("#modalLgLabel").text("Category Details");
+        $("#modalLg").modal("show");
+    });
+
+    $(".btn-success").click(function(e) {
+        $("#modalLgBody").load("category/add");
+        $("#modalLgLabel").text("Add Category");
+        $("#modalLg").modal("show");
+    });
+</script>
