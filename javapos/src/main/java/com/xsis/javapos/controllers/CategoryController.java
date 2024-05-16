@@ -28,12 +28,12 @@ public class CategoryController {
 		// data.add(new Category((long)1, "Makanan", "Makanan"));
 		// data.add(new Category((long)2, "Minuman", "Minuman"));
 		data.add(new Category());
-		data.get(data.size()-1).setId((long) 10);
+		data.get(data.size()-1).setId((long) 1);
 		data.get(data.size()-1).setName("Makanan");
 		data.get(data.size()-1).setDescription("Makanan");
 
 		data.add(new Category());
-		data.get(data.size()-1).setId((long) 11);
+		data.get(data.size()-1).setId((long) 2);
 		data.get(data.size()-1).setName("Minuman");
 		data.get(data.size()-1).setDescription("Minuman");
 
