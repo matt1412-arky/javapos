@@ -12,19 +12,31 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Tbl_M_Category")
-public class Category {
+@Table(name = "Tbl_M_Customer")
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private long id;
 
-    @Column(name = "name", length = 100, unique = true, nullable = false)
+    @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @Column(name = "description", nullable = true)
-    private String description;
+    @Column(name = "email", length = 100, unique = true, nullable = true)
+    private String email;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "address", nullable = true)
+    private String address;
+
+    @Column(name = "phone", length=50, nullable = true)
+    private String phone;
+
+    @Column(name = "role_id", nullable = false)
+    private int roleId;
+    
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
@@ -38,75 +50,104 @@ public class Category {
     @Column(name = "update_by")
     private int updateBy;
 
-    @Column(name = "update_date")
+    @Column(name = "update_date")   
     private LocalDateTime updateDate;
-    
-    public Long getId() {
+
+    public long getId() {
         return id;
     }
-    public void setId(Long id) {
+
+    public void setId(long id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
-    public String getDescription() {
-        return description;
+
+    public String getEmail() {
+        return email;
     }
-    public void setDescription(String description) {
-        this.description = description;
+
+    public void setEmail(String email) {
+        this.email = email;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
     public boolean isDeleted() {
         return isDeleted;
     }
+
     public void setDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
+
     public int getCreateBy() {
         return createBy;
     }
+
     public void setCreateBy(int createBy) {
         this.createBy = createBy;
     }
+
     public LocalDateTime getCreateDate() {
         return createDate;
     }
+
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
+
     public int getUpdateBy() {
         return updateBy;
     }
+
     public void setUpdateBy(int updateBy) {
         this.updateBy = updateBy;
     }
+
     public LocalDateTime getUpdateDate() {
         return updateDate;
     }
+
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
-	
-    // public Category(long id, String name, String description, boolean isDeleted, int createBy, LocalDateTime createDate,
-	// 		int updateBy, LocalDateTime updateDate) {
-	// 	Id = id;
-	// 	Name = name;
-	// 	Description = description;
-	// 	IsDeleted = isDeleted;
-	// 	CreateBy = createBy;
-	// 	CreateDate = createDate;
-	// 	UpdateBy = updateBy;
-	// 	UpdateDate = updateDate;
-	// }
-    
-    // public Category(Long id, String name, String description) {
-    //     this(id, name, description, false, 1, LocalDateTime.now(), 0, null);	
-    // }
 
-    // public Category() {
-    //     this(1,null,null, false, 0, null, 0, null);
-    // }
+    
 }

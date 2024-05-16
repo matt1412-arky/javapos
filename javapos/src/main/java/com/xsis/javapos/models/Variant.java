@@ -12,12 +12,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Tbl_M_Category")
-public class Category {
+@Table(name = "Tbl_M_Variant")
+public class Variant {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "category_id")
+    private long categoryId;
 
     @Column(name = "name", length = 100, unique = true, nullable = false)
     private String name;
@@ -41,11 +44,17 @@ public class Category {
     @Column(name = "update_date")
     private LocalDateTime updateDate;
     
-    public Long getId() {
+    public long getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
+    }
+    public long getCategoryId() {
+        return categoryId;
+    }
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
     public String getName() {
         return name;
@@ -89,24 +98,4 @@ public class Category {
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
-	
-    // public Category(long id, String name, String description, boolean isDeleted, int createBy, LocalDateTime createDate,
-	// 		int updateBy, LocalDateTime updateDate) {
-	// 	Id = id;
-	// 	Name = name;
-	// 	Description = description;
-	// 	IsDeleted = isDeleted;
-	// 	CreateBy = createBy;
-	// 	CreateDate = createDate;
-	// 	UpdateBy = updateBy;
-	// 	UpdateDate = updateDate;
-	// }
-    
-    // public Category(Long id, String name, String description) {
-    //     this(id, name, description, false, 1, LocalDateTime.now(), 0, null);	
-    // }
-
-    // public Category() {
-    //     this(1,null,null, false, 0, null, 0, null);
-    // }
 }
