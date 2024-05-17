@@ -1,5 +1,6 @@
 package com.xsis.javapos.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +39,43 @@ public class CategoryService {
             throw new ResponseStatusException(HttpStatus.CREATED, "New Category saved!");
         } else {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Category already exist");
+        }
+    }
+
+    public void Update(Category data) {
+        Optional<Category> categoryExsist = categoryRepository.findById(data.getId());
+
+        if (!categoryExsist.isEmpty()) {
+            // Update Field
+            data.setCreateBy(categoryExsist.get().getCreateBy());
+            data.setCreateDate(categoryExsist.get().getCreateDate());
+            data.setDeleted(categoryExsist.get().isDeleted());
+            data.setUpdateDate(LocalDateTime.now());
+            
+            // Update Table
+            categoryRepository.save(data);
+            throw new ResponseStatusException(HttpStatus.OK, "Category has been updated");
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category is not exsist");
+        }
+    }
+
+    public void Delete(long id, int userId) {
+        Optional<Category> categoryExsist = categoryRepository.findById(id);
+
+        if (!categoryExsist.isEmpty()) {
+            Category category = categoryExsist.get();
+            
+            // Update Field
+            category.setDeleted(true);
+            category.setUpdateBy(userId);
+            category.setUpdateDate(LocalDateTime.now());
+
+            // Update Table
+            categoryRepository.save(category);
+            throw new ResponseStatusException(HttpStatus.OK, "Category has been deleted");
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category is not exsist");
         }
     }
 }

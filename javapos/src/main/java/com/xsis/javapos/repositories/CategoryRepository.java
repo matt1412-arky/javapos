@@ -10,4 +10,5 @@ import com.xsis.javapos.models.Category;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     Optional<Category> findByName(String name);
+    Optional<Category> findById(long id);
 }
