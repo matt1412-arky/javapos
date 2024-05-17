@@ -1,6 +1,7 @@
 package com.xsis.javapos.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,4 +28,15 @@ public class ProductService {
             throw e;
         }
     }
+
+    public void Create(Product data) {
+        Optional<Product> productExsist = productRepository.findByName(data.getName());
+
+        if (productExsist.isEmpty()) {
+            productRepository.save(data);
+            throw new ResponseStatusException(HttpStatus.CREATED, "New Product saved");
+        } else {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Product already exist");
+        }
+    } 
 }

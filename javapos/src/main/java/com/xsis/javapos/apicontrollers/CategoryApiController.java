@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xsis.javapos.models.Category;
 import com.xsis.javapos.services.CategoryService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("api/category")
 public class CategoryApiController {
 	@Autowired
 	private CategoryService categorySvc;
+	
 	@GetMapping("")
 	public ResponseEntity<List<Category>> get() {
 		try {
@@ -40,5 +44,11 @@ public class CategoryApiController {
 			return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
 			// throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
+	}
+
+	@PostMapping("")
+	public void Create(@RequestBody final Category data) {
+        //TODO: process POST request
+		categorySvc.Create(data);
 	}
 }

@@ -1,6 +1,7 @@
 package com.xsis.javapos.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,17 @@ public class CustomerService {
         } catch (Exception e) {
             // TODO: handle exception
             throw e;
+        }
+    }
+
+    public void Create(Customer data) {
+        Optional<Customer> customerExsist = customerRepository.findByEmail(data.getEmail());
+        
+        if (customerExsist.isEmpty()) {
+            customerRepository.save(data);
+            throw new ResponseStatusException(HttpStatus.CREATED, "New Customer saved");
+        } else {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Customer already exist");
         }
     }
 }

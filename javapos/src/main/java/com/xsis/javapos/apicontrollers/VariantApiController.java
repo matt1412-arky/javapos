@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xsis.javapos.models.Variant;
 import com.xsis.javapos.services.VariantService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/api/variant")
 public class VariantApiController {
     @Autowired
     private VariantService variantSvc;
+    
     @GetMapping("")
     public ResponseEntity<List<Variant>> get() {
         try {
@@ -28,4 +32,11 @@ public class VariantApiController {
             return new ResponseEntity<List<Variant>>(HttpStatus.NO_CONTENT);
         }
     }
+
+    @PostMapping("")
+    public void Create(@RequestBody final Variant data) {
+        //TODO: process POST request
+        variantSvc.Create(data);
+    }
+    
 }

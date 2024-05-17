@@ -1,6 +1,7 @@
 package com.xsis.javapos.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,17 @@ public class CategoryService {
         } catch (Exception e) {
             // TODO: handle exception
             throw e;
+        }
+    }
+
+    public void Create(Category data) {
+        Optional<Category> categoryExsist = categoryRepository.findByName(data.getName());
+
+        if (categoryExsist.isEmpty()) {
+            categoryRepository.save(data);
+            throw new ResponseStatusException(HttpStatus.CREATED, "New Category saved!");
+        } else {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Category already exist");
         }
     }
 }

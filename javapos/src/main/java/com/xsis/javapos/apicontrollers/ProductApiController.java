@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xsis.javapos.models.Product;
 import com.xsis.javapos.services.ProductService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/api/products")
 public class ProductApiController {
     @Autowired
     private ProductService productSvc;
+    
     @GetMapping("")
     public ResponseEntity<List<Product>> get() {
         try {
@@ -28,4 +32,11 @@ public class ProductApiController {
             return new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT);
         }
     }
+
+    @PostMapping("")
+    public void Create(@RequestBody final Product data) {
+        //TODO: process POST request
+        productSvc.Create(data);
+    }
+    
 }

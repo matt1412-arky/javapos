@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xsis.javapos.models.Customer;
 import com.xsis.javapos.services.CustomerService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerApiController {
     @Autowired
     private CustomerService customerSvc;
+    
     @GetMapping("")
     public ResponseEntity<List<Customer>> get() {
         try {
@@ -28,4 +32,11 @@ public class CustomerApiController {
             return new ResponseEntity<List<Customer>>(HttpStatus.NO_CONTENT);
         }
     }
+
+    @PostMapping("")
+    public void Create(@RequestBody Customer data) {
+        //TODO: process POST request
+        customerSvc.Create(data);
+    }
+    
 }
