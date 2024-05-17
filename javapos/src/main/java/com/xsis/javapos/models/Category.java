@@ -19,7 +19,7 @@ public class Category {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", length = 100, unique = true, nullable = false)
+    @Column(name = "name", length = 200, unique = true, nullable = false)
     private String name;
 
     @Column(name = "description", nullable = true)
