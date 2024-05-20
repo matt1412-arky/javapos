@@ -1,5 +1,6 @@
 package com.xsis.javapos.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +12,8 @@ import com.xsis.javapos.models.Category;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     Optional<Category> findById(long id);
     Optional<Category> findByName(String name);
-    Optional<Category> findByNameContainsIgnoreCase(String name);
-    Optional<Category> findByDescriptionContainsIgnoreCase(String description);
-    Optional<Category> findByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCase(String name, String description);
+    Optional<List<Category>> findByNameContainsIgnoreCase(String name);
+    Optional<List<Category>> findByDescriptionContainsIgnoreCase(String description);
+    Optional<List<Category>> findByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCase(String name, String description);
+    Optional<List<Category>> findByIsDeleted(boolean isDeleted);
 }

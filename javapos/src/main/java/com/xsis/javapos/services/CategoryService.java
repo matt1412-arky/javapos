@@ -16,7 +16,7 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
     public List<Category> getAll() throws Exception {
         try {
-            return categoryRepository.findAll();
+            return categoryRepository.findByIsDeleted(false).get();
         } catch (Exception e) {
             // TODO: handle exception
             throw e;
@@ -73,6 +73,6 @@ public class CategoryService {
     public List<Category> getByName(String name) throws Exception{
         // TODO Auto-generated method stub
         return categoryRepository.findByNameContainsIgnoreCase(name)
-            .orElseThrow(() -> new Exception("Category table cannot be accessed!"));
+				.orElseThrow(() -> new Exception("Category table cannot be accessed!"));
     }
 }
