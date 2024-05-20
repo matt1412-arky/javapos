@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.xsis.javapos.models.Category;
 import com.xsis.javapos.repositories.CategoryRepository;
@@ -18,31 +16,24 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
     public List<Category> getAll() throws Exception {
         try {
-            List<Category> data = categoryRepository.findAll();
-            if(data.size() > 0) {
-                return data;
-            } else {
-                throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Category table has no data");
-            }
-            
+            return categoryRepository.findAll();
         } catch (Exception e) {
             // TODO: handle exception
             throw e;
         }
     }
 
-    public void Create(Category data) {
+    public Category Create(Category data) throws Exception {
         Optional<Category> categoryExsist = categoryRepository.findByName(data.getName());
 
         if (categoryExsist.isEmpty()) {
-            categoryRepository.save(data);
-            throw new ResponseStatusException(HttpStatus.CREATED, "New Category saved!");
+            return categoryRepository.save(data);
         } else {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Category already exist");
+            return new Category();
         }
     }
 
-    public void Update(Category data) {
+    public Category Update(Category data) throws Exception {
         Optional<Category> categoryExsist = categoryRepository.findById(data.getId());
 
         if (!categoryExsist.isEmpty()) {
@@ -53,14 +44,15 @@ public class CategoryService {
             data.setUpdateDate(LocalDateTime.now());
             
             // Update Table
-            categoryRepository.save(data);
-            throw new ResponseStatusException(HttpStatus.OK, "Category has been updated");
+            return categoryRepository.save(data);
+            // throw new ResponseStatusException(HttpStatus.OK, "Category has been updated");
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category is not exsist");
+            return new Category();
+            // throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category is not exsist");
         }
     }
 
-    public void Delete(long id, int userId) {
+    public Category Delete(long id, int userId) throws Exception {
         Optional<Category> categoryExsist = categoryRepository.findById(id);
 
         if (!categoryExsist.isEmpty()) {
@@ -72,10 +64,15 @@ public class CategoryService {
             category.setUpdateDate(LocalDateTime.now());
 
             // Update Table
-            categoryRepository.save(category);
-            throw new ResponseStatusException(HttpStatus.OK, "Category has been deleted");
+            return categoryRepository.save(category);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category is not exsist");
+            return new Category();
         }
+    }
+
+    public List<Category> getByName(String name) throws Exception{
+        // TODO Auto-generated method stub
+        return categoryRepository.findByNameContainsIgnoreCase(name)
+            .orElseThrow(() -> new Exception("Category table cannot be accessed!"));
     }
 }

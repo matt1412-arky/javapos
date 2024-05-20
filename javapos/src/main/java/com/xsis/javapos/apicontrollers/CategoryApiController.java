@@ -24,7 +24,7 @@ public class CategoryApiController {
 	private CategoryService categorySvc;
 	
 	@GetMapping("")
-	public ResponseEntity<List<Category>> get() {
+	public ResponseEntity<?> get() {
 		try {
 			List<Category> data = categorySvc.getAll();
 		// List<Category> data = new ArrayList<Category>();
@@ -38,13 +38,17 @@ public class CategoryApiController {
 		// data.get(data.size()-1).setId((long) 2);
 		// data.get(data.size()-1).setName("Minuman");
 		// data.get(data.size()-1).setDescription("Minuman dari API");
+			if (data.size() > 0 ) {
+				return new ResponseEntity<List<Category>>(data, HttpStatus.OK);
 
-			return new ResponseEntity<List<Category>>(data, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			e.printStackTrace();
-			return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
-			// throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+			// e.printStackTrace();
+			// return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -62,21 +66,68 @@ public class CategoryApiController {
 	// 	}
 	// }
 
+	@GetMapping("/getByName/{name}")
+	public ResponseEntity<?> getByName(@PathVariable String name) {
+		//TODO: process GET request
+		try {
+			List<Category> data = categorySvc.getByName(name);
+
+			if (data.size() > 0) {
+				return new ResponseEntity<List<Category>>(data, HttpStatus.OK);				
+			} else {
+				return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@PostMapping("")
-	public void Create(@RequestBody final Category data) {
+	public ResponseEntity<?> Create (@RequestBody final Category data) {
         //TODO: process POST request
-		categorySvc.Create(data);
+		try {
+			Category newCategory = categorySvc.Create(data);
+			return new ResponseEntity<Category>(newCategory, HttpStatus.CREATED);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PutMapping("")
-	public void Update(@RequestBody final Category data) {
+	public ResponseEntity<?> Update(@RequestBody final Category data) {
 		//TODO: process PUT request
-		categorySvc.Update(data);
+		try {
+			Category updateCategory = categorySvc.Update(data);
+
+			if (updateCategory.getId() > 0) {
+				return new ResponseEntity<Category>(updateCategory, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<String>("Category does not exists!", HttpStatus.NO_CONTENT);
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@DeleteMapping("/{id}/{userId}")
-	public void Update(@PathVariable final long id, @PathVariable int userId) {
+	public ResponseEntity<?> Update(@PathVariable final long id, @PathVariable int userId) {
 		//TODO: process DELETE request
-		categorySvc.Delete(id, userId);
+		try {
+			Category deletedCategory = categorySvc.Delete(id, userId);
+
+			if (deletedCategory.getId() > 0) {
+				return new ResponseEntity<Category>(deletedCategory, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<String>("Category does not exists!", HttpStatus.NO_CONTENT);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }
