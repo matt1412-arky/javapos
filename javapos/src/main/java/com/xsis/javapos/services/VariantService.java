@@ -1,12 +1,11 @@
 package com.xsis.javapos.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.xsis.javapos.models.Variant;
 import com.xsis.javapos.repositories.VariantRepository;
@@ -17,25 +16,58 @@ public class VariantService {
     private VariantRepository variantRepository;
     public List<Variant> getAll() throws Exception{
         try {
-            List<Variant> data = variantRepository.findAll();
-            if(data.size() > 0) {
-                return data;
-            } else {
-                throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Variant table has no data");
-            }
+            return variantRepository.findByIsDeleted(false).get();
         } catch (Exception e) {
             // TODO: handle exception
             throw e;
         }
     }
 
-    public void Create(Variant data) {
+    public Variant Create(Variant data) throws Exception {
         Optional<Variant> variantExsist = variantRepository.findByName(data.getName());
         if(variantExsist.isEmpty()) {
-            variantRepository.save(data);
-            throw new ResponseStatusException(HttpStatus.CREATED, "New Variant saved");
+            return variantRepository.save(data);
         } else {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Variant already exist");
+            return new Variant();
         }
+    }
+
+    public Variant Update(Variant data) throws Exception {
+        Optional<Variant> variantExsist = variantRepository.findById(data.getId());
+
+        if (!variantExsist.isEmpty()) {
+            // Update Field
+            data.setCreateBy(variantExsist.get().getCreateBy());
+            data.setCreateDate(variantExsist.get().getCreateDate());
+            data.setDeleted(variantExsist.get().isDeleted());
+            data.setUpdateDate(LocalDateTime.now());
+
+            // Update Table
+            return variantRepository.save(data);
+        } else {
+            return new Variant();
+        }
+    }
+
+    public Variant Delete(long id, long categoryId) throws Exception {
+        Optional<Variant> variantExsist = variantRepository.findById(id);
+
+        if (!variantExsist.isEmpty()) {
+            Variant variant = variantExsist.get();
+
+            // Update Field
+            variant.setDeleted(true);
+            variant.setUpdateDate(LocalDateTime.now());
+
+            // Update Table
+            return variantRepository.save(variant);
+        } else {
+            return new Variant();
+        }
+    }
+
+    public List<Variant> getByName(String name) throws Exception {
+        return variantRepository.findByNameContainsIgnoreCase(name)
+            .orElseThrow(() -> new Exception("Variant table cannot be accessed!"));
     }
 }
