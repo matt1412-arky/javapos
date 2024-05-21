@@ -1,5 +1,6 @@
 package com.xsis.javapos.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import com.xsis.javapos.repositories.ProductRepository;
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
+    private Optional<Product> productExsist;
     public List<Product> getAll() throws Exception {
         try {
             List<Product> data = productRepository.findAll();
@@ -29,14 +31,48 @@ public class ProductService {
         }
     }
 
-    public void Create(Product data) {
-        Optional<Product> productExsist = productRepository.findByName(data.getName());
+    public Product Create(Product data) throws Exception {
+        productExsist = productRepository.findByName(data.getName());
 
         if (productExsist.isEmpty()) {
-            productRepository.save(data);
-            throw new ResponseStatusException(HttpStatus.CREATED, "New Product saved");
+            return productRepository.save(data);
         } else {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Product already exist");
+            return new Product();
         }
-    } 
+    }
+    
+    public Product Update(Product data) throws Exception {
+        productExsist = productRepository.findById(data.getId());
+
+        if (!productExsist.isEmpty()) {
+            // Update Field
+            data.setVariantId(productExsist.get().getVariantId());
+            data.setCreateBy(productExsist.get().getCreateBy());
+            data.setCreateDate(productExsist.get().getCreateDate());
+            data.setDeleted(productExsist.get().isDeleted());
+            data.setUpdateDate(productExsist.get().getUpdateDate());
+
+            // Update Table
+            return productRepository.save(data);
+        } else {
+            return new Product();
+        }
+    }
+
+    public Product Delete(long id, long variantId) throws Exception {
+        productExsist = productRepository.findById(id);
+
+        if (!productExsist.isEmpty()) {
+            Product product = productExsist.get();
+
+            // Update Field
+            product.setDeleted(true);
+            product.setUpdateDate(LocalDateTime.now());
+
+            // Update Table
+            return productRepository.save(product);
+        } else {
+            return new Product();
+        }
+    }
 }
