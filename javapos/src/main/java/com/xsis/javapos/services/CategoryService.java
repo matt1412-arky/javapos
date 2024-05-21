@@ -14,6 +14,8 @@ import com.xsis.javapos.repositories.CategoryRepository;
 public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
+    private Optional<Category> categoryExsist;
+
     public List<Category> getAll() throws Exception {
         try {
             return categoryRepository.findByIsDeleted(false).get();
@@ -24,7 +26,7 @@ public class CategoryService {
     }
 
     public Category Create(Category data) throws Exception {
-        Optional<Category> categoryExsist = categoryRepository.findByName(data.getName());
+        categoryExsist = categoryRepository.findByName(data.getName());
 
         if (categoryExsist.isEmpty()) {
             return categoryRepository.save(data);
@@ -34,7 +36,7 @@ public class CategoryService {
     }
 
     public Category Update(Category data) throws Exception {
-        Optional<Category> categoryExsist = categoryRepository.findById(data.getId());
+        categoryExsist = categoryRepository.findById(data.getId());
 
         if (!categoryExsist.isEmpty()) {
             // Update Field
@@ -53,7 +55,7 @@ public class CategoryService {
     }
 
     public Category Delete(long id, int userId) throws Exception {
-        Optional<Category> categoryExsist = categoryRepository.findById(id);
+        categoryExsist = categoryRepository.findById(id);
 
         if (!categoryExsist.isEmpty()) {
             Category category = categoryExsist.get();

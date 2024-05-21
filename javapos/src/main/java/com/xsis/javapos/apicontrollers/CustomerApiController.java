@@ -5,8 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -62,20 +63,20 @@ public class CustomerApiController {
         }
     }    
 
-    // @DeleteMapping("/{id}/{userId}")
-    // public ResponseEntity<?> Update (@PathVariable final long id, @PathVariable int userId) {
-    //     //TODO: process DELETE request
-    //     try {
-    //         Customer deletedCustomer = customerSvc.Delete(id, userId);
+    @DeleteMapping("/{id}/{roleId}")
+    public ResponseEntity<?> Update (@PathVariable final long id, @PathVariable int roleId) {
+        //TODO: process DELETE request
+        try {
+            Customer deletedCustomer = customerSvc.Delete(id, roleId);
 
-    //         if (deletedCustomer.getId() > 0) {
-    //             return new ResponseEntity<Customer>(deletedCustomer, HttpStatus.OK);
-    //         } else {
-    //             return new ResponseEntity<String>("Customer not found", HttpStatus.NOT_FOUND);
-    //         }
-    //     } catch (Exception e) {
-    //         // TODO: handle exception
-    //         return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-    // }
+            if (deletedCustomer.getId() > 0) {
+                return new ResponseEntity<Customer>(deletedCustomer, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<String>("Customer not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

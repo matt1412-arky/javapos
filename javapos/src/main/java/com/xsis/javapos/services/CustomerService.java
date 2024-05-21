@@ -14,6 +14,7 @@ import com.xsis.javapos.repositories.CustomerRepository;
 public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
+    private Optional<Customer> customerExsist;
     public List<Customer> getAll() throws Exception {
         try {
             return customerRepository.findByIsDeleted(false).get();
@@ -24,7 +25,7 @@ public class CustomerService {
     }
 
     public Customer Create(Customer data) throws Exception {
-        Optional<Customer> customerExsist = customerRepository.findByEmail(data.getEmail());
+        customerExsist = customerRepository.findByEmail(data.getEmail());
         
         if (customerExsist.isEmpty()) {
             return customerRepository.save(data);
@@ -34,10 +35,11 @@ public class CustomerService {
     }
 
     public Customer Update(Customer data) throws Exception {
-        Optional<Customer> customerExsist = customerRepository.findById(data.getId());
+        customerExsist = customerRepository.findById(data.getId());
 
         if (!customerExsist.isEmpty()) {
             // Update Field
+            data.setRoleId(customerExsist.get().getRoleId());
             data.setCreateBy(customerExsist.get().getCreateBy());
             data.setCreateDate(customerExsist.get().getCreateDate());
             data.setDeleted(customerExsist.get().isDeleted());
@@ -53,7 +55,7 @@ public class CustomerService {
     }
 
     public Customer Delete(long id, int userId) throws Exception {
-        Optional<Customer> customerExsist = customerRepository.findById(id);
+        customerExsist = customerRepository.findById(id);
 
         if (!customerExsist.isEmpty()) {
             Customer customer = customerExsist.get();

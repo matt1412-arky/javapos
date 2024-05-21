@@ -15,6 +15,7 @@ import com.xsis.javapos.repositories.VariantRepository;
 public class VariantService {
     @Autowired
     private VariantRepository variantRepository;
+    private Optional<Variant> variantExsist;
     public List<Variant> getAll() throws Exception{
         try {
             return variantRepository.findByIsDeleted(false).get();
@@ -34,7 +35,7 @@ public class VariantService {
     }
 
     public Variant Create(Variant data) throws Exception {
-        Optional<Variant> variantExsist = variantRepository.findByName(data.getName());
+        variantExsist = variantRepository.findByName(data.getName());
         if(variantExsist.isEmpty()) {
             return variantRepository.save(data);
         } else {
@@ -43,7 +44,7 @@ public class VariantService {
     }
 
     public Variant Update(Variant data) throws Exception {
-        Optional<Variant> variantExsist = variantRepository.findById(data.getId());
+        variantExsist = variantRepository.findById(data.getId());
 
         if (!variantExsist.isEmpty()) {
             // Update Field
@@ -60,7 +61,7 @@ public class VariantService {
     }
 
     public Variant Delete(long id, long categoryId) throws Exception {
-        Optional<Variant> variantExsist = variantRepository.findById(id);
+        variantExsist = variantRepository.findById(id);
 
         if (!variantExsist.isEmpty()) {
             Variant variant = variantExsist.get();
