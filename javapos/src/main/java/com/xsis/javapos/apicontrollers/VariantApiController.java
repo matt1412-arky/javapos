@@ -1,6 +1,7 @@
 package com.xsis.javapos.apicontrollers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,22 @@ public class VariantApiController {
     public ResponseEntity<?> get() {
         try {
             List<Variant> data = variantSvc.getAll();
+            
+            if (data.size() > 0) {
+                return new ResponseEntity<>(data, HttpStatus.OK);       
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getAll() {
+        try {
+            List<Map<String, Object[]>> data = variantSvc.objGetAll();
             
             if (data.size() > 0) {
                 return new ResponseEntity<>(data, HttpStatus.OK);       
