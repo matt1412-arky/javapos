@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.xsis.javapos.models.Variant;
@@ -34,6 +35,36 @@ public interface VariantRepository extends JpaRepository<Variant, Long> {
                 "\tv.update_date updateDate \r\n" + //
                 "from tbl_m_variant as v\r\n" + //
                 "inner join tbl_m_category as c on v.category_id = c.id \r\n" + //
-                "where v.is_deleted = false;", nativeQuery = true)
-    Optional<List<Map<String, Object[]>>> findAllNative();
+                "where v.is_deleted = false", nativeQuery = true)
+    Optional<List<Map<String, Object>>> findAllNative();
+
+    @Query(value = "select \r\n" + //
+                "\tv.id,\r\n" + //
+                "\tv.category_id categoryId,\r\n" + //
+                "\tv.\"name\", \r\n" + //
+                "\tv.description,\r\n" + //
+                "\tv.is_deleted isDeleted,\r\n" + //
+                "\tv.create_by createBy,\r\n" + //
+                "\tv.create_date createDate,\r\n" + //
+                "\tv.update_by updateBy,\r\n" + //
+                "\tv.update_date updateDate \r\n" + //
+                "from tbl_m_variant as v\r\n" + //
+                "inner join tbl_m_category as c on v.category_id = c.id \r\n" + //
+                "where v.is_deleted = false and c.id = :categoryId", nativeQuery = true)
+    Optional<List<Map<String, Object>>> findByCategoryIdNative(@Param("categoryId") long categoryId);
+
+    @Query(value = "select \r\n" + //
+                "\tv.id,\r\n" + //
+                "\tv.category_id categoryId,\r\n" + //
+                "\tv.\"name\", \r\n" + //
+                "\tv.description,\r\n" + //
+                "\tv.is_deleted isDeleted,\r\n" + //
+                "\tv.create_by createBy,\r\n" + //
+                "\tv.create_date createDate,\r\n" + //
+                "\tv.update_by updateBy,\r\n" + //
+                "\tv.update_date updateDate \r\n" + //
+                "from tbl_m_variant as v\r\n" + //
+                "inner join tbl_m_category as c on v.category_id = c.id \r\n" + //
+                "where v.is_deleted = false and lower(c.name)=lower(:categoryName)", nativeQuery = true)
+    Optional<List<Map<String, Object>>> findByCategoryNameNative(@Param("categoryName") String categoryName);
 }

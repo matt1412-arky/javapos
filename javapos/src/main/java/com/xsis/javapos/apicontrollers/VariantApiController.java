@@ -43,12 +43,12 @@ public class VariantApiController {
     @GetMapping("/getAll")
     public ResponseEntity<?> getAll() {
         try {
-            List<Map<String, Object[]>> data = variantSvc.objGetAll();
+            List<Map<String, Object>> data = variantSvc.objGetAll();
             
             if (data.size() > 0) {
-                return new ResponseEntity<>(data, HttpStatus.OK);       
+                return new ResponseEntity<List<Map<String, Object>>>(data, HttpStatus.OK);       
             } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
             // TODO: handle exception
@@ -72,6 +72,37 @@ public class VariantApiController {
         }
     }
     
+    @GetMapping("/getByCatId/{categoryId}")
+    public ResponseEntity<?> getByCatId(@PathVariable long categoryId) {
+        try {
+            List<Map<String, Object>> data = variantSvc.getByCatId(categoryId);
+
+            if (data.size() > 0) {
+                return new ResponseEntity<List<Map<String, Object>>> (data, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
+            }  
+        } catch (Exception e) {
+            // TODO: handle exception
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getByCatName/{categoryName}")
+    public ResponseEntity<?> getByCatName(@PathVariable String categoryName) {
+        try {
+            List<Map<String, Object>> data = variantSvc.getByCatName(categoryName);
+
+            if (data.size() > 0) {
+                return new ResponseEntity<List<Map<String, Object>>> (data, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
+            }  
+        } catch (Exception e) {
+            // TODO: handle exception
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PostMapping("")
     public ResponseEntity<?> Create(@RequestBody final Variant data) {

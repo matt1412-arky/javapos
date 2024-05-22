@@ -25,9 +25,27 @@ public class VariantService {
         }
     }
 
-    public List<Map<String, Object[]>> objGetAll() throws Exception {
+    public List<Map<String, Object>> objGetAll() throws Exception {
         try {
             return variantRepository.findAllNative().get();
+        } catch (Exception e) {
+            // TODO: handle exception
+            throw e;
+        }
+    }
+
+    public List<Map<String, Object>> getByCatId(long categoryId) throws Exception {
+        try {
+            return variantRepository.findByCategoryIdNative(categoryId).get();
+        } catch (Exception e) {
+            // TODO: handle exception
+            throw e;
+        }
+    }
+
+    public List<Map<String, Object>> getByCatName(String categoryName) throws Exception {
+        try {
+            return variantRepository.findByCategoryNameNative(categoryName).get();
         } catch (Exception e) {
             // TODO: handle exception
             throw e;
