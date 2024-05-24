@@ -31,6 +31,21 @@ public class ProductService {
         }
     }
 
+    public Product getById(long id) throws Exception {  
+        try {
+            productExsist = productRepository.findById(id);
+
+            if (!productExsist.isEmpty()) {
+                return productExsist.get();
+            } else {
+                throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Product with ID " + id + " does not exsist");
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            throw e;
+        }
+    }
+
     public Product Create(Product data) throws Exception {
         productExsist = productRepository.findByName(data.getName());
 
@@ -75,4 +90,14 @@ public class ProductService {
             return new Product();
         }
     }
+
+    public Product updateStock(long productId, int stock) throws Exception {
+        try {
+            productRepository.updateStock(productId, stock);
+            return productRepository.findById(productId)
+                    .orElseThrow(() -> new Exception("Product not found with ID: " + productId));
+        } catch (Exception e) {
+            throw new Exception("Failed to update stock for product ID: " + productId, e);
+        }
+    }     
 }

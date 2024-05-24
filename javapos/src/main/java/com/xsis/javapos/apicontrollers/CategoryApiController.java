@@ -40,7 +40,6 @@ public class CategoryApiController {
 		// data.get(data.size()-1).setDescription("Minuman dari API");
 			if (data.size() > 0 ) {
 				return new ResponseEntity<List<Category>>(data, HttpStatus.OK);
-
 			} else {
 				return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
 			}

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/product")
 public class ProductApiController {
     @Autowired
     private ProductService productSvc;
@@ -34,6 +34,22 @@ public class ProductApiController {
             // TODO: handle exception
             e.printStackTrace();
             return new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable final long id) {
+        //TODO: process GET request
+        try {
+            Product data = productSvc.getById(id);
+            if (data.getId() > 0) {
+                return new ResponseEntity<Product>(data, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<String>("Product does not exsist!", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -79,6 +95,21 @@ public class ProductApiController {
             }
         } catch (Exception e) {
             // TODO: handle exception
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/updateStock/{productId}/{stock}")
+    public ResponseEntity<?> updateStock(@PathVariable final long productId, @PathVariable final int stock) {
+        try {
+            Product updatedProductStock = productSvc.updateStock(productId, stock);
+
+            if (updatedProductStock != null) {
+                return new ResponseEntity<Product>(updatedProductStock, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<String>("Product does not exist!", HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

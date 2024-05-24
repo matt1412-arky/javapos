@@ -1,6 +1,7 @@
 package com.xsis.javapos.models;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -9,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -49,6 +51,9 @@ public class OrderHeader {
 
     @Column(name = "update_date")
     private LocalDateTime updateDate;
+
+    @OneToMany(mappedBy = "orderHeader")
+    private List<OrderDetail> orderDetails;
 
     public long getId() {
         return id;
@@ -136,5 +141,13 @@ public class OrderHeader {
 
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 }

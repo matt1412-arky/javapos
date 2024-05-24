@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -46,6 +48,10 @@ public class OrderDetail {
 
     @Column(name = "update_date")
     private LocalDateTime updateDate;
+
+    @ManyToOne
+    @JoinColumn(name = "order_header_id", updatable = false, insertable = false)
+    private OrderHeader orderHeader;
 
     public long getId() {
         return id;
@@ -126,5 +132,4 @@ public class OrderDetail {
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
-    
 }
