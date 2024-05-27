@@ -38,7 +38,7 @@ public class OrderService {
 
     public List<OrderHeader> getAll() throws Exception {
         try {
-            return orderHeaderRepository.findAll();
+            return orderHeaderRepository.findByIsDeleted(false).get();
         } catch (Exception e) {
             // TODO: handle exception
             throw e;
@@ -54,6 +54,10 @@ public class OrderService {
 		return data;
 	}
 	
+	public OrderHeader getById(long orderHeaderId) {
+		return orderHeaderRepository.findById(orderHeaderId).orElse(new OrderHeader());
+	}
+
 	public OrderHeader Create(OrderHeader data) throws Exception {
 		try {
 			orderHeaderExsist = orderHeaderRepository.findById(data.getId());
@@ -103,7 +107,7 @@ public class OrderService {
 		}
 	}
     
-    public OrderHeader update(OrderHeader order) throws Exception {
+    public OrderHeader Update(OrderHeader order) throws Exception {
 		try {
 			orderHeaderExsist = orderHeaderRepository.findById(order.getId());
 			
@@ -174,7 +178,7 @@ public class OrderService {
 		}
 	}
 
-    public OrderHeader delete(Long orderHeaderId, int userId) throws Exception{
+    public boolean Delete(Long orderHeaderId, int userId) throws Exception{
 		try {
 			orderHeaderExsist = orderHeaderRepository.findById(orderHeaderId);
 			
@@ -185,31 +189,40 @@ public class OrderService {
 				}
 				
 				//Delete selected Order
-				orderHeaderRepository.deleteOrderHeader(orderHeaderId, userId);
-				
-				//Check if Order Details exist
-				List<OrderDetail> orderDetailExisting = orderHeaderExsist.get().getOrderDetails(); 
-				if (!orderDetailExisting.isEmpty()) {
-					//Delete all Order Details items
-					orderDetailRepository.deleteOrderDetail(orderHeaderId, userId, orderDetailExsist.get().getUpdateDate());
+				if (orderHeaderRepository.deleteOrderHeader(orderHeaderId, userId) == 1) {
+					//Check if Order Details exist
+					List<OrderDetail> orderDetailExisting = orderHeaderExsist.get().getOrderDetails(); 
 					
-					//Update Stock per Product
-					for(OrderDetail item : orderDetailExisting) {
-						productExsist = productRepository.findById(item.getProductId());
-						if (productExsist.isPresent()){
-							int currStock = productExsist.get().getStock();
-							
-							// Return Item Quantity to Product Stock
-							productRepository.updateStock(productExsist.get().getId(), currStock+item.getQty());
-						}
-						else {
-							throw new Exception("Product (ID = " + productExsist.get().getId() + ") does not exist!");
+					//Update Stock per Item only if Order Detail exist
+					if (!orderDetailExisting.isEmpty()) {
+						//Delete all Order Details items
+						if (orderDetailRepository.deleteOrderDetail(orderHeaderId, userId, orderHeaderExsist.get().getUpdateDate()) == 1) {
+							for(OrderDetail item : orderDetailExisting) {
+								productExsist = productRepository.findById(item.getProductId());
+								if (productExsist.isPresent()){
+									int currStock = productExsist.get().getStock();
+									
+									// Return Item Quantity to Product Stock
+									productRepository.updateStock(productExsist.get().getId(), currStock+item.getQty());
+								}
+								else {
+									throw new Exception("Product (ID = " + productExsist.get().getId() + ") does not exist!");
+								}
+							}							
 						}
 					}
 				}
+				else {
+//					throw new Exception("Order (ID = " + orderHeaderExisting.get().getId() + ") failed to be Deleted!");
+					return false;
+				};
+				
+				return true;
+			}
+			else {
+				return false;
 			}
 			
-			return orderHeaderExsist.get();
 		} catch (Exception e) {
 			// TODO: handle DELETE process exception
 			// Roll back All DELETE Transaction

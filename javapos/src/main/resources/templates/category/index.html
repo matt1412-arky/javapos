@@ -54,8 +54,10 @@
 </html>
 
 <script>
+    let catId;
     $(".btn-primary").click(function(e) {
-        $("#modalLgBody").load("category/" + this.value);
+        catId = this.value;
+        $("#modalLgBody").load("category/" + catId);
         $("#modalLgLabel").text("Category Details");
         $("#modalLg").modal("show");
     });

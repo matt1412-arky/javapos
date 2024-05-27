@@ -8,10 +8,7 @@
 <body>
     <div layout:fragment="content">
         <form id="formNewCategory" th:action="@{~/category/save}" method="post">
-            <div class="form-group">
-                <label for="categoryId">ID:</label>
-                <input type="text" class="form-control" id="categoryId" name="Id" placeholder="Enter ID">
-            </div>
+            <input type="hidden" name="createBy" value="1">
             <div class="form-group">
                 <label for="categoryName">Name:</label>
                 <input type="text" class="form-control" id="categoryName" name="Name" placeholder="Enter Name">
