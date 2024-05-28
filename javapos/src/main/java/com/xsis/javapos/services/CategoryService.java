@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.xsis.javapos.models.Category;
 import com.xsis.javapos.repositories.CategoryRepository;
@@ -17,9 +19,9 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
     private Optional<Category> categoryExsist;
 
-    public List<Category> getAll() throws Exception {
+    public Optional<List<Map<String, Object>>> getAll() throws Exception {
         try {
-            return categoryRepository.findByIsDeleted(false).get();
+            return categoryRepository.findAllNative();
         } catch (Exception e) {
             // TODO: handle exception
             throw e;
@@ -55,21 +57,21 @@ public class CategoryService {
     }
 
     public Category Update(Category data) throws Exception {
-        categoryExsist = categoryRepository.findById(data.getId());
+        Optional<List<Map<String, Object>>> categoryExsist = categoryRepository.findByIdNative(data.getId());
 
-        if (!categoryExsist.isEmpty()) {
+        if (categoryExsist.isPresent() && !categoryExsist.get().isEmpty()) {
+            Map<String, Object> categoryMap = categoryExsist.get().get(0);
+
             // Update Field
-            data.setCreateBy(categoryExsist.get().getCreateBy());
-            data.setCreateDate(categoryExsist.get().getCreateDate());
-            data.setDeleted(categoryExsist.get().isDeleted());
+            data.setCreateBy((Integer) categoryMap.get("createBy"));
+            // data.setCreateDate((LocalDateTime) categoryMap.get("createDate"));
+            // data.setDeleted((Boolean) categoryMap.get("isDeleted"));
             data.setUpdateDate(LocalDateTime.now());
-            
+
             // Update Table
             return categoryRepository.save(data);
-            // throw new ResponseStatusException(HttpStatus.OK, "Category has been updated");
         } else {
-            return new Category();
-            // throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category is not exsist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist");
         }
     }
 

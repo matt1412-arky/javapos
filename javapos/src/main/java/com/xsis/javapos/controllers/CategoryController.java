@@ -3,6 +3,7 @@ package com.xsis.javapos.controllers;
 // import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class CategoryController {
 		ModelAndView view = new ModelAndView("category/index");
 
 		try {
-			List<Category> data = categorySvc.getAll();
+			Optional<List<Map<String, Object>>> data = categorySvc.getAll();
 			// data.add(new Category((long)1, "Makanan", "Makanan"));
 			// data.add(new Category((long)2, "Minuman", "Minuman"));
 			// data.add(new Category());
@@ -42,14 +43,14 @@ public class CategoryController {
 			// data.get(data.size()-1).setId((long) 2);
 			// data.get(data.size()-1).setName("Minuman");
 			// data.get(data.size()-1).setDescription("Minuman");
-			view.addObject("data", data);
+			view.addObject("data", data.get());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 		}
 		return view;
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("detail/{id}")
 	ModelAndView Details(@PathVariable long id) throws Exception {
 		try {
 			ModelAndView view = new ModelAndView("category/detail");
@@ -92,5 +93,41 @@ public class CategoryController {
 		// System.out.print(data);
 		return new ModelAndView("redirect:/category");
 	}
+
+	@GetMapping("/edit/{id}")
+    ModelAndView showEditForm(@PathVariable long id) throws Exception {
+        ModelAndView view = new ModelAndView("category/edit");
+        try {
+            Optional<Category> categoryOpt = categorySvc.getById(id);
+            if (categoryOpt.isPresent()) {
+                view.addObject("category", categoryOpt.get());
+            } else {
+                // Handle case where category is not found
+                view.setViewName("redirect:/category");
+            }
+        } catch (Exception e) {
+            // Handle exception
+            throw e;
+        }
+        return view;
+    }
 	
+	@PostMapping("edit/save")
+	ModelAndView Edit (@ModelAttribute Category data) throws Exception {
+		//TODO: process PUT request
+		try {
+			Category updateCategory = categorySvc.Update(data);
+
+			if (updateCategory.getId() > 0) {
+				System.out.println("New Category has been edited!");
+			} else {
+				System.out.println("Failed to update new Category");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Error: " + e.getMessage());
+		}
+		// System.out.print(data);
+		return new ModelAndView("redirect:/category");
+	}
 }

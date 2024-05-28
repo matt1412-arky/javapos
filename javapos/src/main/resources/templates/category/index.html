@@ -33,7 +33,7 @@
                             <td th:text="${item.Description}"></td>
                             <td>
                                 <div class="btn-group">
-                                    <button th:value="${item.Id}" class="btn btn-primary" title="Details" href="/category/1">
+                                    <button th:value="${item.Id}" class="btn btn-primary" title="Details">
                                         <i class="fas fa-info-circle"></i> <!-- Font Awesome icon for Details -->
                                     </button>
                                     <button th:value="${item.Id}" class="btn btn-warning" title="Edit">
@@ -57,7 +57,7 @@
     let catId;
     $(".btn-primary").click(function(e) {
         catId = this.value;
-        $("#modalLgBody").load("category/" + catId);
+        $("#modalLgBody").load("category/detail/" + catId);
         $("#modalLgLabel").text("Category Details");
         $("#modalLg").modal("show");
     });
@@ -65,6 +65,13 @@
     $(".btn-success").click(function(e) {
         $("#modalLgBody").load("category/add");
         $("#modalLgLabel").text("Add Category");
+        $("#modalLg").modal("show");
+    });
+
+    $(".btn-warning").click(function(e){
+        catId = this.value;
+        $("#modalLgBody").load("category/edit/" + catId );
+        $("#modalLgLabel").text("Edit Category");
         $("#modalLg").modal("show");
     });
 </script>

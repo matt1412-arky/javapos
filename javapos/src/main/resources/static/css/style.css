@@ -1,18 +1,10 @@
-.social-links {
-    display: flex;
-    justify-content: space-between;
-    max-width: 120px; /* Adjust as needed */
-    margin-top: 10px; /* Adjust as needed */
-}
-
 .social-link {
-    color: #ffffff; /* Adjust as needed */
-    font-size: 20px; /* Adjust as needed */
-    margin-right: 10px; /* Adjust as needed */
+    color: white;
+    margin: 0 10px;
 }
 
 .social-link:hover {
-    color: #cccccc; /* Adjust as needed */
+    color: #ddd;
 }
 
 body {

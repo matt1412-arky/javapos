@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Category</title>
+</head>
+<body>
+    <div class="container">
+        <form th:action="@{/category/edit/save}" th:object="${category}" method="post">
+            <input type="hidden" name="id" th:value="${category.id}" />
+            <!-- <input type="text" name="createBy" th:value="${category.createBy}" />
+            <input type="text" name="createDate" th:value="${category.createDate}" />
+            <input type="text" name="isDeleted" th:value="${category.isDeleted}"> -->
+            <div class="mb-3">
+                <label for="categoryName" class="form-label">Name:</label>
+                <input type="text" class="form-control" name="name" th:value="${category.name}" placeholder="Enter Name">
+            </div>
+            <div class="mb-3">
+                <label for="categoryDescription" class="form-label">Description:</label>
+                <input type="text" class="form-control" name="description" th:value="${category.description}" placeholder="Enter Description">
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Save</button>
+        </form>
+    </div>
+</body>
+</html>

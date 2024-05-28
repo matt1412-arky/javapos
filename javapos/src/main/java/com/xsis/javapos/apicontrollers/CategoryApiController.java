@@ -2,6 +2,7 @@ package com.xsis.javapos.apicontrollers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class CategoryApiController {
 	@GetMapping("")
 	public ResponseEntity<?> get() {
 		try {
-			List<Category> data = categorySvc.getAll();
+			Optional<List<Map<String, Object>>> data = categorySvc.getAll();
 		// List<Category> data = new ArrayList<Category>();
 
 		// data.add(new Category());
@@ -39,10 +40,10 @@ public class CategoryApiController {
 		// data.get(data.size()-1).setId((long) 2);
 		// data.get(data.size()-1).setName("Minuman");
 		// data.get(data.size()-1).setDescription("Minuman dari API");
-			if (data.size() > 0 ) {
-				return new ResponseEntity<List<Category>>(data, HttpStatus.OK);
+			if (data.isPresent()) {
+				return new ResponseEntity<Optional<List<Map<String, Object>>>>(data, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
+				return new ResponseEntity<Optional<List<Map<String, Object>>>>(HttpStatus.NO_CONTENT);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
