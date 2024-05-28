@@ -2,6 +2,7 @@ package com.xsis.javapos.controllers;
 
 // import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,8 +50,20 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/{id}")
-	ModelAndView Details(@PathVariable long id) {
-		return new ModelAndView("category/detail");
+	ModelAndView Details(@PathVariable long id) throws Exception {
+		try {
+			ModelAndView view = new ModelAndView("category/detail");
+			List<Map<String, Object>> data = categorySvc.getByIdNative(id);
+			if (data != null && !data.isEmpty()) {
+				view.addObject("data", data.get(0));
+				return view;
+			} else {
+				return new ModelAndView("redirect:/category");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw e;
+		}
 	}
 
 	@GetMapping("/add")

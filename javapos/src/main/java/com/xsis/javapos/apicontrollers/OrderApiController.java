@@ -46,12 +46,12 @@ public class OrderApiController {
 			//TODO: process Order Details data request
 			List<OrderDetail> data = orderSvc.getAllDetail(orderHeaderId);
 			
-			if (data.isEmpty())
+			if (data.isEmpty()){
 				return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-			
-			return new ResponseEntity<List<OrderDetail>>(data, HttpStatus.OK);
-		}
-		catch (Exception ex) {
+			} else {
+				return new ResponseEntity<List<OrderDetail>>(data, HttpStatus.OK);
+			}
+		} catch (Exception ex) {
 			// TODO: handle exception
 			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

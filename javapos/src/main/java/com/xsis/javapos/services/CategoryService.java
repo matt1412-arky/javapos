@@ -2,6 +2,7 @@ package com.xsis.javapos.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,24 @@ public class CategoryService {
     public List<Category> getAll() throws Exception {
         try {
             return categoryRepository.findByIsDeleted(false).get();
+        } catch (Exception e) {
+            // TODO: handle exception
+            throw e;
+        }
+    }
+
+    public List<Map<String, Object>> getByIdNative (long id) throws Exception {
+        try {
+            return categoryRepository.findByIdNative(id).get();
+        } catch (Exception e) {
+            // TODO: handle exception
+            throw e;
+        }
+    }
+
+    public Optional<Category> getById(long id) throws Exception {
+        try {
+            return categoryRepository.findById(id);
         } catch (Exception e) {
             // TODO: handle exception
             throw e;

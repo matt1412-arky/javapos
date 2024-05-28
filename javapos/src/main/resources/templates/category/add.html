@@ -22,3 +22,15 @@
     </div>
 </body>
 </html>
+<script>
+    $("#formNewCategory").validate({
+        errorClass: "text-danger",
+
+        rules: {
+            Name: {
+                required: true,
+                minlength: 3
+            }
+        }
+    });
+</script>

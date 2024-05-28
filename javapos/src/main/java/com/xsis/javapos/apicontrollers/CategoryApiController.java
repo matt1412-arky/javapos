@@ -1,6 +1,7 @@
 package com.xsis.javapos.apicontrollers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,19 +52,19 @@ public class CategoryApiController {
 		}
 	}
 
-	// @GetMapping("/getById/{id}")
-	// public ResponseEntity<Category> getById(@PathVariable final long id) {
-	// 	//TODO: process GET request
-	// 	try {
-	// 	Category data = categorySvc.getById();
-	// 	return new ResponseEntity<Category>(data, HttpStatus.OK);
-	// 	} catch (Exception e) {
-	// 		// TODO: handle exception
-	// 		e.printStackTrace();
-	// 		return new ResponseEntity<Category>(HttpStatus.NO_CONTENT);
-	// 		// throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-	// 	}
-	// }
+	@GetMapping("/getByIdNative/{id}")
+	public ResponseEntity<List<Map<String, Object>>> getByIdNative(@PathVariable final long id) {
+		//TODO: process GET request
+		try {
+			List<Map<String, Object>> data = categorySvc.getByIdNative(id);
+		return new ResponseEntity<List<Map<String, Object>>>(data, HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return new ResponseEntity<List<Map<String, Object>>>(HttpStatus.NO_CONTENT);
+			// throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+		}
+	}
 
 	@GetMapping("/getByName/{name}")
 	public ResponseEntity<?> getByName(@PathVariable String name) {

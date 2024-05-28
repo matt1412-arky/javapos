@@ -1,28 +1,21 @@
-<html>
-	<head>	
-		<title>
-			Category :: Details
-		</title>
-	</head>
-	<body>
-		<div layout:fragment="content">
-			<h1>Category Details of ID = <span th:text="${id}"></span></h1>
-		</div>
-	</body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Category :: Details</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <h1>Category Details of ID = <span th:text="${data['id']}"></span></h1>
+        <ul>
+            <li>id: <span th:text="${data['id']}"></span></li>
+            <li>name: <span th:text="${data['name']}"></span></li>
+            <li>description: <span th:text="${data['description']}"></span></li>
+            <li>isDeleted: <span th:text="${data['isDeleted']}"></span></li>
+            <li>createBy: <span th:text="${data['createBy']}"></span></li>
+            <li>createDate: <span th:text="${data['createDate']}"></span></li>
+            <li>updateBy: <span th:text="${data['updateBy']}"></span></li>
+            <li>updateDate: <span th:text="${data['updateDate']}"></span></li>
+        </ul>
+    </div>
+</body>
 </html>
-
-<script>
-	$(document).ready(function(e) {
-		$.ajax({
-			type: "GET",
-			url: "/categories/" + id,
-			dataType: "json",
-			success: function(data) {
-				// how to bind data to thymeleaf template
-			},
-			error: function(error) {
-				alert("Error");
-			}
-		});
-	});
-</script>

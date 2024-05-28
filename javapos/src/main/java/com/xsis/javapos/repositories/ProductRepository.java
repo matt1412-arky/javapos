@@ -18,7 +18,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<List<Product>> findByPrice(double price);
 
     @Query(value = "UPDATE Tbl_M_Product SET stock=:stock "
-                    + "WHERE id=:productId "
+                    + "WHERE id = :productId "
                     + "RETURNING *", nativeQuery = true)
     public Optional<Product> updateStock(@Param("productId") long productId, @Param("stock") int stock);
 }
