@@ -76,23 +76,20 @@ public class CategoryService {
     }
 
     public Category Delete(long id, int userId) throws Exception {
-        categoryExsist = categoryRepository.findById(id);
-
-        if (!categoryExsist.isEmpty()) {
-            Category category = categoryExsist.get();
-            
-            // Update Field
+        Optional<Category> categoryOptional = categoryRepository.findById(id);
+        
+        if (categoryOptional.isPresent()) {
+            Category category = categoryOptional.get();
             category.setDeleted(true);
             category.setUpdateBy(userId);
             category.setUpdateDate(LocalDateTime.now());
-
-            // Update Table
+            
             return categoryRepository.save(category);
         } else {
-            return new Category();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category does not exist");
         }
     }
-
+    
     public List<Category> getByName(String name) throws Exception{
         // TODO Auto-generated method stub
         return categoryRepository.findByNameContainsIgnoreCase(name)

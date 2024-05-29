@@ -27,8 +27,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="item:${data}">
-                            <td th:text="${item.Id}"></td>
+                        <tr th:each="item, iterStat:${data}">
+                            <td th:text="${iterStat.count}"></td>
                             <td th:text="${item.Name}"></td>
                             <td th:text="${item.Description}"></td>
                             <td>
@@ -72,6 +72,13 @@
         catId = this.value;
         $("#modalLgBody").load("category/edit/" + catId );
         $("#modalLgLabel").text("Edit Category");
+        $("#modalLg").modal("show");
+    });
+
+    $(".btn-danger").click(function(e){
+        catId = this.value;
+        $("#modalLgBody").load("category/delete/" + catId );
+        $("#modalLgLabel").text("Delete Category");
         $("#modalLg").modal("show");
     });
 </script>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Category</title>
+</head>
+<body>
+    <div class="container">
+        <div class="alert alert-warning">
+            <form th:action="@{/category/delete/save}" method="post">
+                <input type="hidden" name="id" th:value="${category.id}">
+                <input type="hidden" name="createDate" th:value="${category.createDate}">
+                <p>Are you sure you want to delete this category?</p>
+                <ul>
+                    <li><strong>ID:</strong> <span th:text="${category.id}"></span></li>
+                    <li><strong>Name:</strong> <span th:text="${category.name}"></span></li>
+                    <li><strong>Description:</strong> <span th:text="${category.description}"></span></li>
+                </ul>
+                <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt me-2"></i>Delete</button>
+                <a href="/category" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Cancel</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

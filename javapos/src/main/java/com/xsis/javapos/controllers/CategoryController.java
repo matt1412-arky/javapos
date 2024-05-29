@@ -130,4 +130,38 @@ public class CategoryController {
 		// System.out.print(data);
 		return new ModelAndView("redirect:/category");
 	}
+
+	@GetMapping("/delete/{id}")
+	ModelAndView Delete(@PathVariable long id) throws Exception {
+		ModelAndView view = new ModelAndView("category/delete");
+		try {
+			Optional<Category> categoryOpt = categorySvc.getById(id);
+			if (categoryOpt.isPresent()) {
+				view.addObject("category", categoryOpt.get());
+			} else {
+				// Handle case where category is not found
+				view.setViewName("redirect:/category");
+			}
+		} catch (Exception e) {
+			// Handle exception
+			throw e;
+		}
+		return view;
+	}
+
+	@PostMapping("delete/save")
+	ModelAndView DeleteSave(@ModelAttribute Category data) {
+		try {
+			// Perform deletion
+			categorySvc.Delete(data.getId(), 1);
+			
+			System.out.println("Category has been deleted!");
+		} catch (Exception e) {
+			// Handle exception
+			System.out.println("Error: " + e.getMessage());
+		}
+		
+		// Redirect to the category index page
+		return new ModelAndView("redirect:/category");
+	}
 }
