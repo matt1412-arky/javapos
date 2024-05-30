@@ -6,15 +6,19 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.xsis.javapos.models.Category;
 import com.xsis.javapos.services.CategoryService;
+import com.xsis.javapos.viewmodels.CategoryView;
 
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -25,28 +29,44 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 @RequestMapping("/category")
 public class CategoryController {
-	@Autowired CategoryService categorySvc;
+	@Autowired 
+	private CategoryService categorySvc;
+
+	private final String apiUrl = "http://localhost:8080/api/category";
+	private RestTemplate restTemplate = new RestTemplate();
 	@GetMapping("")
-	ModelAndView Index() {
+	ModelAndView Index() throws Exception {
 		ModelAndView view = new ModelAndView("category/index");
-
 		try {
-			Optional<List<Map<String, Object>>> data = categorySvc.getAll();
-			// data.add(new Category((long)1, "Makanan", "Makanan"));
-			// data.add(new Category((long)2, "Minuman", "Minuman"));
-			// data.add(new Category());
-			// data.get(data.size()-1).setId((long) 1);
-			// data.get(data.size()-1).setName("Makanan");
-			// data.get(data.size()-1).setDescription("Makanan");
-
-			// data.add(new Category());
-			// data.get(data.size()-1).setId((long) 2);
-			// data.get(data.size()-1).setName("Minuman");
-			// data.get(data.size()-1).setDescription("Minuman");
-			view.addObject("data", data.get());
+			ResponseEntity<CategoryView[]> apiResponse = restTemplate.getForEntity(apiUrl, CategoryView[].class);
+			if (apiResponse.getStatusCode() == HttpStatus.OK) {
+				CategoryView[] data = apiResponse.getBody();
+				view.addObject("data", data);
+			} else {
+				// Handle error
+				throw new Exception(apiResponse.getStatusCode().toString() + ":" + apiResponse.getBody());
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			// TODO: handle exception
+			view.addObject("Error : ", e.getMessage());
 		}
+		// try {
+		// 	Optional<List<Map<String, Object>>> data = categorySvc.getAll();
+		// 	// data.add(new Category((long)1, "Makanan", "Makanan"));
+		// 	// data.add(new Category((long)2, "Minuman", "Minuman"));
+		// 	// data.add(new Category());
+		// 	// data.get(data.size()-1).setId((long) 1);
+		// 	// data.get(data.size()-1).setName("Makanan");
+		// 	// data.get(data.size()-1).setDescription("Makanan");
+
+		// 	// data.add(new Category());
+		// 	// data.get(data.size()-1).setId((long) 2);
+		// 	// data.get(data.size()-1).setName("Minuman");
+		// 	// data.get(data.size()-1).setDescription("Minuman");
+		// 	view.addObject("data", data.get());
+		// } catch (Exception e) {
+		// 	// TODO Auto-generated catch block
+		// }
 		return view;
 	}
 	
@@ -97,6 +117,7 @@ public class CategoryController {
 	@GetMapping("/edit/{id}")
     ModelAndView showEditForm(@PathVariable long id) throws Exception {
         ModelAndView view = new ModelAndView("category/edit");
+		// ResponseEntity<CategoryView> apiResponse = restTemplete.getForEntity();
         try {
             Optional<Category> categoryOpt = categorySvc.getById(id);
             if (categoryOpt.isPresent()) {

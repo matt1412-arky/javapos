@@ -63,16 +63,16 @@
     });
 
     $(".btn-success").click(function(e) {
-        $("#modalLgBody").load("category/add");
-        $("#modalLgLabel").text("Add Category");
-        $("#modalLg").modal("show");
+        $("#modalBody").load("category/add");
+        $("#modalLabel").text("Add Category");
+        $("#modal").modal("show");
     });
 
     $(".btn-warning").click(function(e){
         catId = this.value;
-        $("#modalLgBody").load("category/edit/" + catId );
-        $("#modalLgLabel").text("Edit Category");
-        $("#modalLg").modal("show");
+        $("#modalBody").load("category/edit/" + catId );
+        $("#modalLabel").text("Edit Category");
+        $("#modal").modal("show");
     });
 
     $(".btn-danger").click(function(e){
